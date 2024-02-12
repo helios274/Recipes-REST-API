@@ -7,7 +7,7 @@ function sessionConfig() {
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: parseInt(process.env.COOKIE_MAX_AGE),
+      maxAge: parseInt(process.env.SESSION_MAX_AGE),
       secure: process.env.IS_DEVELOPMENT ? false : true,
     },
     store: new MongoStore({
