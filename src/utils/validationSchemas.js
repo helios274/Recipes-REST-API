@@ -176,4 +176,23 @@ export const recipeValidationSchema = {
       errorMessage: "step should not be an empty string",
     },
   },
+  tags: {
+    notEmpty: {
+      errorMessage: "tags field should be an array of at least one tag ID.",
+    },
+    isArray: {
+      options: {
+        min: 1,
+      },
+      errorMessage: "tags field should be an array of at least one tag ID.",
+    },
+  },
+  "tags.*": {
+    isString: {
+      errorMessage: "Tag ID must be a string",
+    },
+    notEmpty: {
+      errorMessage: "Tag IDs should not be an empty string",
+    },
+  },
 };

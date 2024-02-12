@@ -53,15 +53,19 @@ recipeSchema.pre("save", async function (next) {
   next();
 });
 
-recipeSchema.pre("findOneAndUpdate", async function (next) {
-  if (this.isModified("title")) {
-    let slug = slugify(this.title, { lower: true });
-    const existingSlug = await Recipe.findOne({ slug });
-    if (existingSlug) slug = slug + "-" + randomUUID();
-    this.slug = slug;
+recipeSchema.pre(
+  "findOneAndUpdate",
+  { document: true, query: false },
+  async function (next) {
+    if (this.isModified("title")) {
+      let slug = slugify(this.title, { lower: true });
+      const existingSlug = await Recipe.findOne({ slug });
+      if (existingSlug) slug = slug + "-" + randomUUID();
+      this.slug = slug;
+    }
+    next();
   }
-  next();
-});
+);
 
 const Recipe = models.Recipe || model("Recipe", recipeSchema);
 

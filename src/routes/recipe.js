@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { createRecipe, getRecipe, getRecipes } from "../controllers/recipe.js";
+import {
+  createRecipe,
+  deleteRecipe,
+  getRecipe,
+  getRecipes,
+  updateRecipe,
+} from "../controllers/recipe.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import {
   queryValidationSchema,
@@ -14,6 +20,10 @@ router
   .get(checkSchema(queryValidationSchema), getRecipes)
   .post(isAuthenticated, checkSchema(recipeValidationSchema), createRecipe);
 
-router.route("/:slug").get(getRecipe);
+router
+  .route("/:slug")
+  .get(getRecipe)
+  .put(isAuthenticated, checkSchema(recipeValidationSchema), updateRecipe)
+  .delete(isAuthenticated, deleteRecipe);
 
 export default router;

@@ -4,10 +4,8 @@ import session from "express-session";
 import passport from "passport";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
-import paginate from "mongoose-paginate-v2";
 import connectMongoDB from "./db/mongoDB.js";
 import routes from "./routes/index.js";
-import Tag from "./models/tag.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -15,8 +13,6 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 connectMongoDB();
-
-Tag.schema.plugin(paginate);
 
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));

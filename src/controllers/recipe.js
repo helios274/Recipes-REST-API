@@ -89,3 +89,62 @@ export const getRecipes = async (req, res) => {
     res.send(500).send(error.message);
   }
 };
+
+export const updateRecipe = async (req, res) => {
+  const { slug } = req.params;
+  const errors = validationResult(req);
+  try {
+    const existingRecipe = await Recipe.findOne({ slug }, "user");
+    if (!existingRecipe) throw new Error("Recipe does not exist");
+    if (existingRecipe.user.toString() !== req.user._id.toString())
+      return res.status(403).send({
+        success: false,
+        message: "You do not have authorization to perform this action",
+      });
+    if (errors.isEmpty()) {
+      const { title, description, method, tags } = matchedData(req);
+      await Recipe.findOneAndUpdate(
+        { slug },
+        { title, method, description, tags }
+      );
+      res.send({
+        success: true,
+        message: "Recipe updated successfully",
+      });
+    } else {
+      const firstError = errors.array()[0];
+      res.status(400).send({
+        field: firstError.path,
+        value: firstError.value ? firstError.value : null,
+        message: firstError.msg,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+};
+
+export const deleteRecipe = async (req, res) => {
+  const { slug } = req.params;
+  try {
+    const existingRecipe = await Recipe.findOne({ slug }, "user");
+    if (!existingRecipe) throw new Error("Recipe does not exist");
+    if (existingRecipe.user.toString() !== req.user._id.toString())
+      return res.status(403).send({
+        success: false,
+        message: "You do not have authorization to perform this action",
+      });
+    await Recipe.findOneAndDelete({ slug });
+    res.send({
+      success: true,
+      message: "Recipe deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: error.message,
+    });
+  }
+};
