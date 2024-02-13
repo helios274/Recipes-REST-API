@@ -20,6 +20,7 @@ const UserSchema = new Schema({
       maxLength: 50,
     },
   },
+  bio: String,
   is_admin: {
     type: Boolean,
     default: false,
