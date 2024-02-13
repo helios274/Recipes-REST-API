@@ -40,16 +40,6 @@ export const loginUser = asyncHandler(async (req, res) => {
   res.send("User logged in successfully");
 });
 
-export const userProfile = asyncHandler(async (req, res) => {
-  res.send({
-    id: req.user._id,
-    email: req.user.email,
-    name: req.user.name,
-    date_joined: req.user.date_joined,
-    last_login: req.user.last_login,
-  });
-});
-
 export const logoutUser = (req, res) => {
   req.logout((err) => {
     if (err) return res.sendStatus(400);
