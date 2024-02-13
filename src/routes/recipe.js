@@ -3,6 +3,7 @@ import {
   createRecipe,
   deleteRecipe,
   getRecipe,
+  getRecipeByTag,
   getRecipes,
   updateRecipe,
 } from "../controllers/recipe.js";
@@ -25,5 +26,7 @@ router
   .get(getRecipe)
   .put(isAuthenticated, checkSchema(recipeValidationSchema), updateRecipe)
   .delete(isAuthenticated, deleteRecipe);
+
+router.get("/tags/:slug", checkSchema(queryValidationSchema), getRecipeByTag);
 
 export default router;

@@ -1,5 +1,6 @@
 import { matchedData, validationResult } from "express-validator";
 import Recipe from "../models/recipe.js";
+import Tag from "../models/tag.js";
 
 export const createRecipe = async (req, res) => {
   const errors = validationResult(req);
@@ -146,5 +147,61 @@ export const deleteRecipe = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+export const getRecipeByTag = async (req, res) => {
+  const { slug } = req.params;
+  try {
+    const tag = await Tag.findOne({ slug }, "name");
+    if (!tag) return res.status(404).send("Tag does not exits");
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      const queryParams = matchedData(req);
+      const searchString = queryParams.search;
+      const page = parseInt(queryParams.page) || 1;
+      const limit = parseInt(queryParams.limit) || 10;
+      const customLabels = {
+        totalDocs: "totalRecipes",
+        docs: "recipes",
+      };
+      const options = {
+        page,
+        limit,
+        customLabels,
+        select: "-updatedAt -__v",
+        populate: [
+          { path: "user", select: "name" },
+          { path: "tags", select: "name" },
+        ],
+      };
+      if (searchString) {
+        const recipes = await Recipe.paginate(
+          {
+            tags: { $in: tag._id },
+            $or: [
+              { title: { $regex: new RegExp(searchString, "i") } },
+              { description: { $regex: new RegExp(searchString, "i") } },
+            ],
+          },
+          options
+        );
+        return res.send(recipes);
+      }
+      const recipes = await Recipe.paginate(
+        { tags: { $in: tag._id } },
+        options
+      );
+      res.send(recipes);
+    } else {
+      res.status(400).send({
+        field: firstError.path,
+        value: firstError.value ? firstError.value : null,
+        message: firstError.msg,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving recipes");
   }
 };
