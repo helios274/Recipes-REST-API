@@ -61,6 +61,20 @@ export const userValidationSchema = {
     trim: true,
     escape: true,
   },
+  bio: {
+    optional: true,
+    isString: {
+      errorMessage: "Bio must be a string",
+    },
+    isLength: {
+      options: {
+        max: 255,
+      },
+      errorMessage: "Bio should not have more than 255 characters",
+    },
+    trim: true,
+    escape: true,
+  },
 };
 
 export const tagValidationSchema = {
@@ -194,5 +208,54 @@ export const recipeValidationSchema = {
     notEmpty: {
       errorMessage: "Tag IDs should not be an empty string",
     },
+  },
+};
+
+export const profileValidationSchema = {
+  first_name: {
+    optional: true,
+    isString: {
+      errorMessage: "First name must be a string",
+    },
+    isLength: {
+      options: {
+        min: 2,
+        max: 50,
+      },
+      errorMessage:
+        "First name should be min: 2 characters and max: 50 characters",
+    },
+    trim: true,
+    escape: true,
+  },
+  last_name: {
+    optional: true,
+    isString: {
+      errorMessage: "Last name must be a string",
+    },
+    isLength: {
+      options: {
+        min: 2,
+        max: 50,
+      },
+      errorMessage:
+        "Last name should be min: 2 characters and max: 50 characters",
+    },
+    trim: true,
+    escape: true,
+  },
+  bio: {
+    optional: true,
+    isString: {
+      errorMessage: "Bio must be a string",
+    },
+    isLength: {
+      options: {
+        max: 255,
+      },
+      errorMessage: "Bio should not have more than 255 characters",
+    },
+    trim: true,
+    escape: true,
   },
 };
