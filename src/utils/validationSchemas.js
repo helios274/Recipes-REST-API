@@ -79,13 +79,13 @@ export const userValidationSchema = {
 
 export const tagValidationSchema = {
   name: {
-    trim: true,
     notEmpty: {
       errorMessage: "Tag name is required",
     },
     isString: {
       errorMessage: "Tag name must be a string",
     },
+    trim: true,
     isLength: {
       options: {
         min: 2,
@@ -111,26 +111,26 @@ export const queryValidationSchema = {
   limit: {
     optional: true,
     isInt: {
-      errorMessage: "limit value must be a positive int",
+      errorMessage: "Value of limit must be a positive int",
     },
   },
   page: {
     optional: true,
     isInt: {
-      errorMessage: "page value must be a positive int",
+      errorMessage: "Value of page must be a positive int",
     },
   },
 };
 
 export const recipeValidationSchema = {
   title: {
-    trim: true,
     notEmpty: {
       errorMessage: "Title is required",
     },
     isString: {
       errorMessage: "Title must be a string",
     },
+    trim: true,
     isLength: {
       options: {
         min: 6,
@@ -141,10 +141,10 @@ export const recipeValidationSchema = {
     escape: true,
   },
   description: {
-    trim: true,
     isString: {
       errorMessage: "Description must be a string",
     },
+    trim: true,
     escape: true,
   },
   method: {

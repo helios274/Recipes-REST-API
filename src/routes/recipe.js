@@ -5,6 +5,7 @@ import {
   getRecipe,
   getRecipeByTag,
   getRecipes,
+  getUserRecipes,
   updateRecipe,
 } from "../controllers/recipe.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
@@ -28,5 +29,7 @@ router
   .delete(isAuthenticated, deleteRecipe);
 
 router.get("/tags/:slug", checkSchema(queryValidationSchema), getRecipeByTag);
+
+router.get("/user/:userId", getUserRecipes);
 
 export default router;

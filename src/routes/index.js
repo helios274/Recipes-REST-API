@@ -15,6 +15,6 @@ router.use("/api/v1/auth", authRoutes);
 router.use("/api/v1/admin", adminRoutes);
 router.use("/api/v1/user", userRoutes);
 router.use("/api/v1/recipe", recipeRoutes);
-// router.use(errorHandler);
+router.use(errorHandler);
 
 export default router;

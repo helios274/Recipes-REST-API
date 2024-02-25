@@ -1,45 +1,54 @@
 import constants from "../utils/constants.js";
 
 const errorHandler = (err, req, res, next) => {
-  const statusCode = res.statusCode ? res.statusCode : 500;
+  console.log("errorHandler called");
+  console.log(err);
+  let statusCode = err.statusCode
+    ? err.statusCode
+    : res.statusCode !== 200
+    ? res.statusCode
+    : 500;
   switch (statusCode) {
     case constants.VALIDATION_ERROR:
+      let location = "";
+      if (err.location) {
+        location = err.location === "body" ? "Body " : "Query ";
+      }
       res.json({
-        title: "validation failed",
+        success: false,
+        title: `${location}Validation Error`,
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
     case constants.NOT_FOUND:
       res.json({
-        title: "Not found",
+        success: false,
+        title: "Not Found Error",
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
     case constants.FORBIDDEN:
       res.json({
-        title: "forbidden",
+        success: false,
+        title: "Unauthenticated Access",
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
     case constants.UNAUTHORIZED:
       res.json({
-        title: "Unauthorized access",
+        success: false,
+        title: "Unauthorized Access",
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
     case constants.SERVER_ERROR:
       res.json({
-        title: "server error",
+        success: false,
+        title: "Server Error",
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
     default:
-      console.log("No error");
       next();
       break;
   }

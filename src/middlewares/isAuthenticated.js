@@ -1,7 +1,9 @@
 const isAuthenticated = (req, res, next) => {
-  req.user
-    ? next()
-    : res.status(401).send({ error: "User is not authenticated" });
+  if (req.user) next();
+  else {
+    res.statusCode = 403;
+    throw new Error("User is not authenticated");
+  }
 };
 
 export default isAuthenticated;

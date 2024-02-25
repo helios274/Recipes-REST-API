@@ -17,7 +17,13 @@ import {
 
 const router = Router();
 
-router.get("/users", isAuthenticated, isAdmin, getUsers);
+router.get(
+  "/users",
+  isAuthenticated,
+  isAdmin,
+  checkSchema(queryValidationSchema),
+  getUsers
+);
 router.post(
   "/tags",
   isAuthenticated,
