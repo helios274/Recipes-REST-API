@@ -59,11 +59,21 @@ export const createTag = asyncHandler(async (req, res) => {
       slug: slugify(name, { lower: true }),
       user: req.user._id,
     });
-    res.status(201).send({
+    let responseData = {
       success: true,
       message: "New tag created successfully",
-      newTag: newTag,
-    });
+    };
+    if (!req.user.is_admin) {
+      responseData.tag = {
+        _id: newTag._id,
+        name: newTag.name,
+        slug: newTag.slug,
+      };
+    } else {
+      responseData.tag = newTag;
+    }
+
+    res.status(201).send(responseData);
   } else throw new ValidationError(errors);
 });
 
@@ -72,7 +82,7 @@ export const getTag = asyncHandler(async (req, res) => {
     res.statusCode = 400;
     throw new Error("Invalid tag ID");
   }
-  const tag = await Tag.findById(req.params.id);
+  const tag = await Tag.findById(req.params.id, "-user -__v");
   if (!tag) {
     res.statusCode = 404;
     throw new Error("Tag not found");

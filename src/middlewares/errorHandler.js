@@ -14,35 +14,35 @@ const errorHandler = (err, req, res, next) => {
       if (err.location) {
         location = err.location === "body" ? "Body " : "Query ";
       }
-      res.json({
+      res.status(statusCode).json({
         success: false,
         title: `${location}Validation Error`,
         message: err.message,
       });
       break;
     case constants.NOT_FOUND:
-      res.json({
+      res.status(statusCode).json({
         success: false,
         title: "Not Found Error",
         message: err.message,
       });
       break;
     case constants.FORBIDDEN:
-      res.json({
+      res.status(statusCode).json({
         success: false,
         title: "Unauthenticated Access",
         message: err.message,
       });
       break;
     case constants.UNAUTHORIZED:
-      res.json({
+      res.status(statusCode).json({
         success: false,
         title: "Unauthorized Access",
         message: err.message,
       });
       break;
     case constants.SERVER_ERROR:
-      res.json({
+      res.status(statusCode).json({
         success: false,
         title: "Server Error",
         message: err.message,

@@ -1,59 +1,36 @@
 import { Router } from "express";
-import { updateProfile, getProfile } from "../controllers/user.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
+import { createTag, getTag, getTags } from "../controllers/admin.js";
 import { checkSchema } from "express-validator";
-import { profileValidationSchema } from "../utils/validationSchemas.js";
+import {
+  queryValidationSchema,
+  tagValidationSchema,
+} from "../utils/validationSchemas.js";
 
 const router = Router();
 
 /**
  * @swagger
- * /user/profile:
- *   get:
- *     tags: [User]
- *     summary: Get current user profile
- *     responses:
- *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetProfileResponse'
- *       403:
- *         description: Unauthenticated Access
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/403ErrorResponse'
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
- */
-router.get("/profile", isAuthenticated, getProfile);
-
-/**
- * @swagger
- * /user/profile:
- *   patch:
- *     tags: [User]
- *     summary: Update current user profile
- *     description: Update profile data of the current user. Only first name, last name, or bio can be updated.
+ * /tags:
+ *   post:
+ *     tags: [Tags]
+ *     summary: Create new tag
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UpdateUserBody'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
  *     responses:
- *       200:
- *         description: Success
+ *       201:
+ *         description: Tag created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/UpdateProfileResponse'
+ *               $ref: '#/components/schemas/CreateTagResponse'
  *       400:
  *         description: Validation error
  *         content:
@@ -73,31 +50,70 @@ router.get("/profile", isAuthenticated, getProfile);
  *             schema:
  *               $ref: '#/components/schemas/500ErrorResponse'
  */
-router.patch(
-  "/profile",
-  isAuthenticated,
-  checkSchema(profileValidationSchema),
-  updateProfile
-);
+router.post("", isAuthenticated, checkSchema(tagValidationSchema), createTag);
 
 /**
  * @swagger
- * /user/profile/{id}:
+ * /tags:
  *   get:
- *     tags: [User]
- *     summary: Get profile of a user by id
+ *     tags: [Tags]
+ *     summary: Get tags
+ *     description: Get all tags with pagination
  *     parameters:
- *       - name: id
- *         in: path
- *         description: Id of the user
- *         required: true
+ *       - name: page
+ *         in: query
+ *         description: Page number
+ *         required: false
+ *         type: integer
+ *       - name: limit
+ *         in: query
+ *         description: Number of items per page
+ *         required: false
+ *         type: integer
+ *       - name: search
+ *         in: query
+ *         description: Search term for filtering recipes
+ *         required: false
+ *         type: string
  *     responses:
  *       200:
  *         description: Success
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/GetProfileResponse'
+ *               $ref: '#/components/schemas/GetTagsResponse'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/400ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/500ErrorResponse'
+ */
+router.get("", checkSchema(queryValidationSchema), getTags);
+
+/**
+ * @swagger
+ * /tags/{id}:
+ *   get:
+ *     tags: [Tags]
+ *     summary: Get a tag by ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Id of the tag
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GetSingleTagResponse'
  *       404:
  *         description: Not found error
  *         content:
@@ -111,6 +127,6 @@ router.patch(
  *             schema:
  *               $ref: '#/components/schemas/500ErrorResponse'
  */
-router.get("/profile/:id", getProfile);
+router.get("/:id", getTag);
 
 export default router;

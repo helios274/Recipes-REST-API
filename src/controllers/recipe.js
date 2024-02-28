@@ -10,6 +10,12 @@ export const createRecipe = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     const { title, description, method, tags } = matchedData(req);
+    tags.forEach((tag) => {
+      if (!mongoose.Types.ObjectId.isValid(tag)) {
+        res.statusCode = 400;
+        throw new Error("Invalid tag Id provided: " + tag);
+      }
+    });
     const newRecipe = await Recipe.create({
       user: req.user._id,
       title,

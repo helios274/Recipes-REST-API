@@ -1,3 +1,50 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     createUserInput:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *         - first_name
+ *         - last_name
+ *       properties:
+ *         email:
+ *           type: string
+ *           default: example@mail.com
+ *         password:
+ *           type: string
+ *           default: Password@43535
+ *         first_name:
+ *           type: string
+ *           default: Random
+ *         last_name:
+ *           type: string
+ *           default: User
+ *         bio:
+ *           type: string
+ *           default: I'm a random user
+ *     createUserResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *         message:
+ *           type: string
+ *     loginUserInput:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           default: example@mail.com
+ *         password:
+ *           type: string
+ *           default: Password@43535
+ */
 export const userValidationSchema = {
   email: {
     notEmpty: {
@@ -77,6 +124,71 @@ export const userValidationSchema = {
   },
 };
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     CreateTagResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *         message:
+ *           type: string
+ *         tag:
+ *           type: object
+ *           properties:
+ *             _id:
+ *               type: string
+ *             name:
+ *               type: string
+ *             slug:
+ *               type: string
+ *     GetTagsResponse:
+ *       type: object
+ *       properties:
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               slug:
+ *                 type: string
+ *         totalTags:
+ *           type: integer
+ *         limit:
+ *           type: integer
+ *         totalPages:
+ *           type: integer
+ *         page:
+ *           type: integer
+ *         pagingCounter:
+ *           type: integer
+ *         hasPrevPage:
+ *           type: boolean
+ *         hasNextPage:
+ *           type: boolean
+ *         prevPage:
+ *           type: integer
+ *           nullable: true
+ *         nextPage:
+ *           type: integer
+ *           nullable: true
+ *     GetSingleTagResponse:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         slug:
+ *           type: string
+ */
+
 export const tagValidationSchema = {
   name: {
     notEmpty: {
@@ -121,6 +233,290 @@ export const queryValidationSchema = {
     },
   },
 };
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     CreateRecipeBody:
+ *       type: object
+ *       required:
+ *         - title
+ *         - method
+ *         - tags
+ *       properties:
+ *         title:
+ *           type: string
+ *           default: Classic Chocolate Chip Cookies
+ *         description:
+ *           type: string
+ *           default: Homemade cookies with gooey chocolate chips
+ *         method:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               ingredients:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 default:
+ *                   - "1 cup unsalted butter, softened"
+ *                   - "3/4 cup granulated sugar"
+ *                   - "3/4 cup packed brown sugar"
+ *                   - "1 teaspoon vanilla extract"
+ *                   - "2 large eggs"
+ *                   - "2 1/4 cups all-purpose flour"
+ *                   - "1 teaspoon baking soda"
+ *                   - "1/2 teaspoon salt"
+ *                   - "2 cups semisweet chocolate chips"
+ *               steps:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 default:
+ *                   - "Preheat oven to 375°F (190°C)."
+ *                   - "In a large bowl, cream together butter, granulated sugar, brown sugar, and vanilla extract until smooth."
+ *                   - "Beat in eggs, one at a time, until well blended."
+ *                   - "Combine flour, baking soda, and salt; gradually add to the creamed mixture and mix well."
+ *                   - "Stir in chocolate chips."
+ *                   - "Drop by rounded tablespoonfuls onto ungreased baking sheets."
+ *                   - "Bake for 8 to 10 minutes or until golden brown."
+ *                   - "Cool on wire racks."
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *           default:
+ *             - 65c49460da684f154afdb132
+ *     CreateRecipeResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *         message:
+ *           type: string
+ *         recipe:
+ *           type: object
+ *           properties:
+ *             user:
+ *               type: string
+ *             title:
+ *               type: string
+ *             description:
+ *               type: string
+ *             method:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   ingredients:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   steps:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   _id:
+ *                     type: string
+ *             tags:
+ *               type: array
+ *               items:
+ *                 type: string
+ *             _id:
+ *               type: string
+ *             createdAt:
+ *               type: string
+ *               format: date-time
+ *             updatedAt:
+ *               type: string
+ *               format: date-time
+ *             slug:
+ *               type: string
+ *             __v:
+ *               type: integer
+ *     GetRecipesResponse:
+ *       type: object
+ *       properties:
+ *         recipes:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                 type: string
+ *               user:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: object
+ *                     properties:
+ *                       first:
+ *                         type: string
+ *                       last:
+ *                         type: string
+ *                   _id:
+ *                     type: string
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               method:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     ingredients:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     steps:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *               createdAt:
+ *                 type: string
+ *                 format: date-time
+ *               slug:
+ *                 type: string
+ *         totalRecipes:
+ *           type: integer
+ *         limit:
+ *           type: integer
+ *         totalPages:
+ *           type: integer
+ *         page:
+ *           type: integer
+ *         pagingCounter:
+ *           type: integer
+ *         hasPrevPage:
+ *           type: boolean
+ *         hasNextPage:
+ *           type: boolean
+ *         prevPage:
+ *           type: integer
+ *           nullable: true
+ *         nextPage:
+ *           type: integer
+ *           nullable: true
+ *     GetSingleRecipeResponse:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         user:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: object
+ *               properties:
+ *                 first:
+ *                   type: string
+ *                 last:
+ *                   type: string
+ *             _id:
+ *               type: string
+ *             date_joined:
+ *               type: string
+ *               format: date-time
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         method:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               ingredients:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               steps:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               _id:
+ *                 type: string
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               slug:
+ *                 type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *         slug:
+ *           type: string
+ *         __v:
+ *           type: integer
+ *     UpdateRecipeBody:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *           default: Classic Chocolate Chip Cookies
+ *         description:
+ *           type: string
+ *           default: Homemade cookies with gooey chocolate chips
+ *         method:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               ingredients:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 default:
+ *                   - "1 cup unsalted butter, softened"
+ *                   - "3/4 cup granulated sugar"
+ *                   - "3/4 cup packed brown sugar"
+ *                   - "1 teaspoon vanilla extract"
+ *                   - "2 large eggs"
+ *                   - "2 1/4 cups all-purpose flour"
+ *                   - "1 teaspoon baking soda"
+ *                   - "1/2 teaspoon salt"
+ *                   - "2 cups semisweet chocolate chips"
+ *               steps:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 default:
+ *                   - "Preheat oven to 375°F (190°C)."
+ *                   - "In a large bowl, cream together butter, granulated sugar, brown sugar, and vanilla extract until smooth."
+ *                   - "Beat in eggs, one at a time, until well blended."
+ *                   - "Combine flour, baking soda, and salt; gradually add to the creamed mixture and mix well."
+ *                   - "Stir in chocolate chips."
+ *                   - "Drop by rounded tablespoonfuls onto ungreased baking sheets."
+ *                   - "Bake for 8 to 10 minutes or until golden brown."
+ *                   - "Cool on wire racks."
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *           default:
+ *             - 65c49460da684f154afdb132
+ */
 
 export const recipeValidationSchema = {
   title: {
@@ -211,6 +607,87 @@ export const recipeValidationSchema = {
   },
 };
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UpdateUserBody:
+ *       type: object
+ *       properties:
+ *         first_name:
+ *           type: string
+ *           default: Random
+ *         last_name:
+ *           type: string
+ *           default: User
+ *         bio:
+ *           type: string
+ *           default: I'm a random user
+ *     GetProfileResponse:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: object
+ *           properties:
+ *             first:
+ *               type: string
+ *             last:
+ *               type: string
+ *         _id:
+ *           type: string
+ *         email:
+ *           type: string
+ *         is_admin:
+ *           type: boolean
+ *         is_staff:
+ *           type: boolean
+ *         is_active:
+ *           type: boolean
+ *         last_login:
+ *           type: string
+ *           format: date-time
+ *         date_joined:
+ *           type: string
+ *           format: date-time
+ *         bio:
+ *           type: string
+ *     UpdateProfileResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *         message:
+ *           type: string
+ *         data:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: object
+ *               properties:
+ *                 first:
+ *                   type: string
+ *                 last:
+ *                   type: string
+ *             _id:
+ *               type: string
+ *             email:
+ *               type: string
+ *             is_admin:
+ *               type: boolean
+ *             is_staff:
+ *               type: boolean
+ *             is_active:
+ *               type: boolean
+ *             last_login:
+ *               type: string
+ *               format: date-time
+ *             date_joined:
+ *               type: string
+ *               format: date-time
+ *             bio:
+ *               type: string
+ */
+
 export const profileValidationSchema = {
   first_name: {
     optional: true,
@@ -259,3 +736,71 @@ export const profileValidationSchema = {
     escape: true,
   },
 };
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SuccessResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *         message:
+ *           type: string
+ *     400ErrorResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *           example: false
+ *         title:
+ *           type: string
+ *           example: Validation Error
+ *         message:
+ *           type: string
+ *     401ErrorResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *           example: false
+ *         title:
+ *           type: string
+ *           example: Unauthorized Access
+ *         message:
+ *           type: string
+ *     403ErrorResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *           example: false
+ *         title:
+ *           type: string
+ *           example: Unauthenticated Access
+ *         message:
+ *           type: string
+ *     404ErrorResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *           example: false
+ *         title:
+ *           type: string
+ *           example: Not Found Error
+ *         message:
+ *           type: string
+ *     500ErrorResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *           example: false
+ *         title:
+ *           type: string
+ *           example: Internal error
+ *         message:
+ *           type: string
+ */

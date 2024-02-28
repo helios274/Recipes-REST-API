@@ -21,6 +21,7 @@ export const createUser = asyncHandler(async (req, res) => {
         first: data.first_name,
         last: data.last_name,
       },
+      bio: data.bio,
     });
     res.status(201).send({
       success: true,
