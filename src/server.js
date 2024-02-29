@@ -22,12 +22,8 @@ app.use(routes);
 
 swaggerDocs(app);
 
-if (process.env.IS_DEVELOPMENT) {
-  app.listen(PORT, () => {
-    console.log("-----------------------------");
-    console.log(` Server running at port ${PORT}`);
-    console.log("-----------------------------");
-  });
-} else {
-  app.listen(PORT);
-}
+app.listen(PORT, () => {
+  console.log("-----------------------------");
+  console.log(` Server running at port ${PORT}`);
+  console.log("-----------------------------");
+});
