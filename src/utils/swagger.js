@@ -3,6 +3,10 @@ import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 dotenv.config();
 
+const serverURL = process.env.IS_DEVELOPMENT
+  ? `http://localhost:${process.env.PORT}/api/v1`
+  : `${process.env.PRODUCTION_URL}/api/v1`;
+console.log(serverURL);
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -13,9 +17,7 @@ const options = {
     },
     servers: [
       {
-        url: process.env.IS_DEVELOPMENT
-          ? `http://localhost:${process.env.PORT}/api/v1`
-          : `${process.env.PRODUCTION_URL}/api/v1`,
+        url: serverURL,
       },
     ],
   },
