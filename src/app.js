@@ -15,15 +15,15 @@ connectMongoDB();
 
 app.use(morganMiddleware);
 app.use(express.json());
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? process.env.PRODUCTION_URL
-        : `http://localhost:${process.env.PORT || 3000}`,
-    optionsSuccessStatus: 200,
-  })
-);
+// app.use(
+//   cors({
+//     origin:
+//       process.env.NODE_ENV === "production"
+//         ? process.env.PRODUCTION_URL
+//         : `http://localhost:${process.env.PORT || 3000}`,
+//     optionsSuccessStatus: 200,
+//   })
+// );
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session(sessionConfig()));
 app.use(passport.initialize());
