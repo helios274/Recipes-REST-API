@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import logger from "../logging/index.js";
 
 const connectMongoDB = async () => {
   mongoose.set("strictQuery", true);
@@ -6,10 +7,9 @@ const connectMongoDB = async () => {
     await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "RecipesAPI",
     });
-    console.log(" MongoDB Connected");
-    console.log("-------------------");
+    logger.info("MongoDB Connected");
   } catch (error) {
-    console.log(error);
+    logger.error(error.stack);
     process.exit(1);
   }
 };

@@ -2,9 +2,9 @@ import { Router } from "express";
 import { checkSchema } from "express-validator";
 import passport from "passport";
 import { createUser, loginUser, logoutUser } from "../controllers/auth.js";
-import { userValidationSchema } from "../utils/validationSchemas.js";
+import { userValidationSchema } from "../utils/validation/schemas.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
-import "../auth-strategies/localStrategy.js";
+import "../passport/local.strategy.js";
 
 const router = Router();
 
@@ -15,30 +15,14 @@ const router = Router();
  *     tags: [Authentication]
  *     summary: Registers a new user
  *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/createUserInput'
+ *       $ref: '#/components/requests/CreateUserRequest'
  *     responses:
  *       201:
- *         description: User created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/createUserResponse'
+ *         $ref: '#/components/responses/SuccessResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.post("/register", checkSchema(userValidationSchema), createUser);
 
@@ -47,38 +31,18 @@ router.post("/register", checkSchema(userValidationSchema), createUser);
  * /auth/login:
  *   post:
  *     tags: [Authentication]
- *     summary: User login
+ *     summary: Logins a user
  *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/loginUserInput'
+ *       $ref: '#/components/requests/LoginUserRequest'
  *     responses:
  *       200:
- *         description: User logged in successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/createUserResponse'
+ *         $ref: '#/components/responses/SuccessResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       404:
- *         description: Not found error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/404ErrorResponse'
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.post("/login", passport.authenticate("local"), loginUser);
 
@@ -87,26 +51,16 @@ router.post("/login", passport.authenticate("local"), loginUser);
  * /auth/logout:
  *   post:
  *     tags: [Authentication]
- *     summary: User logout
+ *     summary: Logouts the current user
  *     responses:
  *       200:
- *         description: User logged out successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/createUserResponse'
+ *         $ref: '#/components/responses/SuccessResponse'
+ *       401:
+ *         $ref: '#/components/responses/ForbiddenErrorResponse'
  *       403:
- *         description: Unauthenticated access
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/403ErrorResponse'
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.post("/logout", isAuthenticated, logoutUser);
 

@@ -5,7 +5,7 @@ import { checkSchema } from "express-validator";
 import {
   queryValidationSchema,
   tagValidationSchema,
-} from "../utils/validationSchemas.js";
+} from "../utils/validation/schemas.js";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ const router = Router();
  * /tags:
  *   post:
  *     tags: [Tags]
- *     summary: Create new tag
+ *     summary: Creates a new tag
  *     requestBody:
  *       required: true
  *       content:
@@ -26,29 +26,15 @@ const router = Router();
  *                 type: string
  *     responses:
  *       201:
- *         description: Tag created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/CreateTagResponse'
+ *         $ref: '#/components/responses/CreateTagResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       403:
- *         description: Unauthenticated Access
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/403ErrorResponse'
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
+ *       404:
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.post("", isAuthenticated, checkSchema(tagValidationSchema), createTag);
 
@@ -64,38 +50,33 @@ router.post("", isAuthenticated, checkSchema(tagValidationSchema), createTag);
  *         in: query
  *         description: Page number
  *         required: false
- *         type: integer
+ *         schema:
+ *           type: integer
  *       - name: limit
  *         in: query
  *         description: Number of items per page
  *         required: false
- *         type: integer
+ *         schema:
+ *           type: integer
  *       - name: search
  *         in: query
  *         description: Search term for filtering recipes
  *         required: false
- *         type: string
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetTagsResponse'
+ *         $ref: '#/components/responses/GetTagsResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
+ *       403:
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
+ *       404:
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
-router.get("", checkSchema(queryValidationSchema), getTags);
+router.get("", isAuthenticated, checkSchema(queryValidationSchema), getTags);
 
 /**
  * @swagger
@@ -107,26 +88,21 @@ router.get("", checkSchema(queryValidationSchema), getTags);
  *       - name: id
  *         in: path
  *         description: Id of the tag
+ *         required: true
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetSingleTagResponse'
+ *         $ref: '#/components/responses/GetTagResponse'
+ *       400:
+ *         $ref: '#/components/responses/ValidationErrorResponse'
+ *       403:
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
  *       404:
- *         description: Not found error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/404ErrorResponse'
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
-router.get("/:id", getTag);
+router.get("/:id", isAuthenticated, getTag);
 
 export default router;

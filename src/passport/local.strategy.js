@@ -25,7 +25,7 @@ export default passport.use(
       if (!findUser) {
         throw new AuthError(404, "User doesn't exist");
       }
-      const isUserValid = await bcrypt.compare(password, findUser.password);
+      const isUserValid = bcrypt.compare(password, findUser.password);
       if (!isUserValid) throw new AuthError(400, "Incorrect password");
       await User.updateOne({ email }, { $set: { last_login: Date.now() } });
       done(null, findUser);

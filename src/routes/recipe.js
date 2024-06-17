@@ -12,7 +12,7 @@ import isAuthenticated from "../middlewares/isAuthenticated.js";
 import {
   queryValidationSchema,
   recipeValidationSchema,
-} from "../utils/validationSchemas.js";
+} from "../utils/validation/schemas.js";
 import { checkSchema } from "express-validator";
 
 const router = Router();
@@ -29,70 +29,41 @@ const router = Router();
  *         in: query
  *         description: Page number
  *         required: false
- *         type: integer
+ *         schema:
+ *           type: integer
  *       - name: limit
  *         in: query
  *         description: Number of items per page
  *         required: false
- *         type: integer
+ *         schema:
+ *           type: integer
  *       - name: search
  *         in: query
  *         description: Search term for filtering recipes
  *         required: false
- *         type: string
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetRecipesResponse'
+ *         $ref: '#/components/responses/GetRecipesResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  *   post:
  *     tags: [Recipes]
  *     summary: Create a new recipe
  *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/CreateRecipeBody'
+ *       $ref: '#/components/requests/CreateRecipeRequest'
  *     responses:
  *       201:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/CreateRecipeResponse'
+ *         '#/components/responses/CreateRecipeResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       403:
- *         description: Unauthenticated Access
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/403ErrorResponse'
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 
 router
@@ -111,58 +82,38 @@ router
  *         in: path
  *         description: Slug of the required recipe
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetSingleRecipeResponse'
- *       404:
- *         description: Not found error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/404ErrorResponse'
+ *         $ref: '#/components/responses/GetRecipeResponse'
+ *       400:
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  *   put:
  *     tags: [Recipes]
- *     summary: Update a recipe
+ *     summary: Updates a recipe
  *     parameters:
  *       - name: slug
  *         in: path
  *         description: Slug of the required recipe
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UpdateRecipeBody'
+ *         $ref: '#/components/responses/UpdateRecipeBody'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
+ *       401:
+ *         $ref: '#/components/responses/ForbiddenErrorResponse'
+ *       403:
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
  *       404:
- *         description: Not found error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/404ErrorResponse'
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  *   delete:
  *     tags: [Recipes]
  *     summary: Delete a recipe
@@ -171,25 +122,21 @@ router
  *         in: path
  *         description: Slug of the required recipe
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/SuccessResponse'
+ *         $ref: '#/components/responses/SuccessResponse'
+ *       400:
+ *         $ref: '#/components/responses/ValidationErrorResponse'
+ *       401:
+ *         $ref: '#/components/responses/ForbiddenErrorResponse'
+ *       403:
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
  *       404:
- *         description: Not found error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/404ErrorResponse'
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router
   .route("/:slug")
@@ -208,31 +155,17 @@ router
  *         in: path
  *         description: Slug of the tag
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetRecipesResponse'
+ *         $ref: '#/components/responses/GetRecipesResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       404:
- *         description: Not found error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/404ErrorResponse'
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.get("/tag/:slug", checkSchema(queryValidationSchema), getRecipeByTag);
 
@@ -247,31 +180,17 @@ router.get("/tag/:slug", checkSchema(queryValidationSchema), getRecipeByTag);
  *         in: path
  *         description: ID of the user
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetRecipesResponse'
+ *         $ref: '#/components/responses/GetRecipesResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       404:
- *         description: Not found error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/404ErrorResponse'
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.get("/user/:userId", getUserRecipes);
 

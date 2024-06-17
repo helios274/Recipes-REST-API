@@ -13,7 +13,7 @@ import isAdmin from "../middlewares/isAdmin.js";
 import {
   tagValidationSchema,
   queryValidationSchema,
-} from "../utils/validationSchemas.js";
+} from "../utils/validation/schemas.js";
 
 const router = Router();
 

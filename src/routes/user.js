@@ -2,7 +2,7 @@ import { Router } from "express";
 import { updateProfile, getProfile } from "../controllers/user.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import { checkSchema } from "express-validator";
-import { profileValidationSchema } from "../utils/validationSchemas.js";
+import { profileValidationSchema } from "../utils/validation/schemas.js";
 
 const router = Router();
 
@@ -14,23 +14,17 @@ const router = Router();
  *     summary: Get current user profile
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetProfileResponse'
+ *         $ref: '#/components/responses/GetProfileResponse'
+ *       400:
+ *         $ref: '#/components/responses/ValidationErrorResponse'
+ *       401:
+ *         $ref: '#/components/responses/ForbiddenErrorResponse'
  *       403:
- *         description: Unauthenticated Access
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/403ErrorResponse'
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
+ *       404:
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.get("/profile", isAuthenticated, getProfile);
 
@@ -40,38 +34,21 @@ router.get("/profile", isAuthenticated, getProfile);
  *   patch:
  *     tags: [User]
  *     summary: Update current user profile
- *     description: Update profile data of the current user. Only first name, last name, or bio can be updated.
  *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UpdateUserBody'
+ *       $ref: '#/components/requests/UpdateProfileRequest'
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UpdateProfileResponse'
+ *         $ref: '#/components/responses/UpdateProfileResponse'
  *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/400ErrorResponse'
+ *         $ref: '#/components/responses/ValidationErrorResponse'
+ *       401:
+ *         $ref: '#/components/responses/ForbiddenErrorResponse'
  *       403:
- *         description: Unauthenticated Access
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/403ErrorResponse'
+ *         $ref: '#/components/responses/UnauthorizedErrorResponse'
+ *       404:
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.patch(
   "/profile",
@@ -91,25 +68,17 @@ router.patch(
  *         in: path
  *         description: Id of the user
  *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GetProfileResponse'
+ *         $ref: '#/components/responses/GetProfileResponse'
+ *       400:
+ *         $ref: '#/components/responses/ValidationErrorResponse'
  *       404:
- *         description: Not found error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/404ErrorResponse'
+ *         $ref: '#/components/responses/NotFoundErrorResponse'
  *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/500ErrorResponse'
+ *         $ref: '#/components/responses/InternalErrorResponse'
  */
 router.get("/profile/:id", getProfile);
 

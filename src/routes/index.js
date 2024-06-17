@@ -9,7 +9,7 @@ import errorHandler from "../middlewares/errorHandler.js";
 const router = Router();
 
 router.get("", (req, res) => {
-  res.send("Recipes API using ExpressJS and MongoDB");
+  res.redirect("/api-docs");
 });
 
 router.use("/api/v1/auth", authRoutes);

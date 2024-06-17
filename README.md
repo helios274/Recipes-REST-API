@@ -23,7 +23,7 @@
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`IS_DEVELOPMENT`: Indicate whether the application is running in development (true) or production (false) mode
+`NODE_ENV`: Indicate whether the application is running in development (true) or production (false) mode
 
 `PORT`: Specifies the port number that the application will listen on for incoming connections. Default value 3000
 

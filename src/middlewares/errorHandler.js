@@ -1,13 +1,9 @@
 import constants from "../utils/constants.js";
+import logger from "../config/logging/index.js";
 
 const errorHandler = (err, req, res, next) => {
-  console.log("errorHandler called");
-  console.log(err);
-  let statusCode = err.statusCode
-    ? err.statusCode
-    : res.statusCode !== 200
-    ? res.statusCode
-    : 500;
+  logger.error(err.message);
+  let statusCode = err.statusCode ? err.statusCode : res.statusCode;
   switch (statusCode) {
     case constants.VALIDATION_ERROR:
       let location = "";
@@ -41,15 +37,19 @@ const errorHandler = (err, req, res, next) => {
         message: err.message,
       });
       break;
-    case constants.SERVER_ERROR:
+    // case constants.SERVER_ERROR:
+    //   res.status(statusCode).json({
+    //     success: false,
+    //     title: "Server Error",
+    //     message: err.message,
+    //   });
+    //   break;
+    default:
       res.status(statusCode).json({
         success: false,
         title: "Server Error",
         message: err.message,
       });
-      break;
-    default:
-      next();
       break;
   }
 };
