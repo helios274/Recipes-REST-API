@@ -10,7 +10,7 @@ function sessionConfig() {
     resave: false,
     cookie: {
       maxAge: parseInt(process.env.SESSION_MAX_AGE),
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
     },
     store: new MongoStore({
       client: mongoose.connection.getClient(),
