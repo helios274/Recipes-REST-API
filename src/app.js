@@ -12,6 +12,8 @@ const app = express();
 
 connectMongoDB();
 
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
+
 app.use(morganMiddleware);
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
