@@ -42,7 +42,6 @@ const recipeSchema = new Schema(
   }
 );
 
-recipeSchema.index({ slug: 1 });
 recipeSchema.plugin(paginate);
 
 recipeSchema.pre("save", async function (next) {

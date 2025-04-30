@@ -23,7 +23,6 @@ const tagSchema = new Schema({
   },
 });
 
-tagSchema.index({ slug: 1 });
 tagSchema.plugin(paginate);
 
 const Tag = models.Tag || model("Tag", tagSchema);
